@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -rdynamic CMakeFiles/chip8.dir/main.cpp.o CMakeFiles/chip8.dir/chip8.cpp.o -o chip8  -L/usr/lib/x86_64-linux-gnu  -lSDL2 

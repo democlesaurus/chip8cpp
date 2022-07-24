@@ -18,10 +18,9 @@ Instruction Chip8::fetch() {
     inst.code = memory[pc++];
     inst.code <<= 8;
     inst.code += memory[pc++];
-    if (inst.A.kind == 0x8) {
-        printf("Instruction at %x:\n",pc-2);
-        printf(" -- %x %x %x %x\n",inst.A.kind, inst.A.vx, inst.A.vy, inst.A.n);
-    }   
+    printf("Instruction at %x:\n",pc-2);
+    printf(" -- %x %x %x %x\n",inst.A.kind, inst.A.vx, inst.A.vy, inst.A.n);
+  
     return inst;
 };
 
@@ -143,7 +142,7 @@ bool Chip8::decode_and_execute(Instruction& inst) {
         case 0xC:
             {
                 std::uint16_t random = rand();
-                varRegister[inst.B.vx] = random & inst.B.nn;
+                varRegister[inst.A.vx] = random & inst.B.nn;
             }
             break;
         case 0xD: // Display
@@ -205,11 +204,14 @@ bool Chip8::decode_and_execute(Instruction& inst) {
                 case 0x18:
                     soundTimer = varRegister[inst.A.vx];
                     break;
+                case 0x1e:
+                    idxRegister += varRegister[inst.A.vx];
+                    break;
                 case 0x0A:
                     if (!keyPressed) {
                         pc -= 2;
                     } else {
-                        varRegister[inst.B.vx] = curKey;
+                        varRegister[inst.A.vx] = curKey;
                     }
                     break;
                 case 0x29:
@@ -218,17 +220,18 @@ bool Chip8::decode_and_execute(Instruction& inst) {
                 case 0x33:
                     {
                         std::uint8_t value = varRegister[inst.A.vx];
-                        memory[idxRegister + 0] = value % 10;
-                        memory[idxRegister + 1] = (value / 10) % 10;
-                        memory[idxRegister + 2] = (value / 100) % 10;
+                        memory[idxRegister + 0] = value / 100;
+                        memory[idxRegister + 1] = (value % 100) / 10;
+                        memory[idxRegister + 2] = value % 10;
                     }
+                    break;
                 case 0x55:
-                    for (int i = 0; i < inst.A.vx;i++) {
+                    for (int i = 0; i <= inst.A.vx;i++) {
                         memory[idxRegister + i] = varRegister[i];
                     };
                     break;
                 case 0x65:
-                    for (int i = 0; i < inst.A.vx;i++) {
+                    for (int i = 0; i <= inst.A.vx;i++) {
                         varRegister[i] = memory[idxRegister + i];
                     }
                     break;

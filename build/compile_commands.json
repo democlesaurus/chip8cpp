@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/mvalley/projects/chip8cpp/build",
+  "command": "/usr/bin/g++  -I/usr/include/SDL2 -g -o CMakeFiles/chip8.dir/main.cpp.o -c /home/mvalley/projects/chip8cpp/main.cpp",
+  "file": "/home/mvalley/projects/chip8cpp/main.cpp"
+},
+{
+  "directory": "/home/mvalley/projects/chip8cpp/build",
+  "command": "/usr/bin/g++  -I/usr/include/SDL2 -g -o CMakeFiles/chip8.dir/chip8.cpp.o -c /home/mvalley/projects/chip8cpp/chip8.cpp",
+  "file": "/home/mvalley/projects/chip8cpp/chip8.cpp"
+}
+]
