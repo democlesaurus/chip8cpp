@@ -89,7 +89,7 @@ bool Chip8::decode_and_execute(Instruction& inst) {
                     break;
                 case 0x4:
                     {
-                        std::uint16_t temp = varRegister[inst.A.vx];
+                        std::uint16_t temp{varRegister[inst.A.vx]};
                         varRegister[inst.A.vx] += varRegister[inst.A.vy];
                         if (varRegister[inst.A.vx] < temp) {
                             varRegister[0xF] = 1;
@@ -141,17 +141,17 @@ bool Chip8::decode_and_execute(Instruction& inst) {
             break;
         case 0xC:
             {
-                std::uint16_t random = rand();
+                std::uint8_t random{(std::uint8_t)rand()};
                 varRegister[inst.A.vx] = random & inst.B.nn;
             }
             break;
         case 0xD: // Display
             {
-                std::uint16_t x{varRegister[inst.A.vx] % DISPLAY_WIDTH};
-                std::uint16_t y{varRegister[inst.A.vy] % DISPLAY_HEIGHT};
+                std::uint8_t x{(std::uint8_t)(varRegister[inst.A.vx] % (std::uint8_t)DISPLAY_WIDTH)};
+                std::uint8_t y{(std::uint8_t)(varRegister[inst.A.vy] % (std::uint8_t)DISPLAY_HEIGHT)};
                 varRegister[0xF] = 0;
                 for (int i = 0; i < inst.A.n; i++) {
-                    std::uint8_t spriteData = memory[idxRegister + i];
+                    std::uint8_t spriteData={memory[idxRegister + i]};
                     std:uint8_t mask = 1;
 
                     // hit the bottom of the screen
@@ -160,7 +160,7 @@ bool Chip8::decode_and_execute(Instruction& inst) {
 
                     for (std::uint8_t j = 0; j < 8; j++) {
                         
-                        bool isSpritePixelOn = (spriteData & 0x80);
+                        bool isSpritePixelOn{(bool)(spriteData & 0x80)};
                         spriteData <<= 1;
 
                         // // hit the edge so quit drawing this row or we don't have a pixel to flip
@@ -183,7 +183,7 @@ bool Chip8::decode_and_execute(Instruction& inst) {
         
         case 0xE:
             {
-                bool isKeyPressed = checkKeyStatus(varRegister[inst.A.vx]);
+                bool isKeyPressed{checkKeyStatus(varRegister[inst.A.vx])};
 
                 if (inst.B.nn == 0x9E && isKeyPressed) {
                     pc += 2;
@@ -219,7 +219,7 @@ bool Chip8::decode_and_execute(Instruction& inst) {
                     break; 
                 case 0x33:
                     {
-                        std::uint8_t value = varRegister[inst.A.vx];
+                        std::uint8_t value{varRegister[inst.A.vx]};
                         memory[idxRegister + 0] = value / 100;
                         memory[idxRegister + 1] = (value % 100) / 10;
                         memory[idxRegister + 2] = value % 10;
@@ -255,7 +255,7 @@ bool Chip8::loadROM(const char* filename) {
 	if (file.is_open())
 	{
 		// Get size of file and allocate a buffer to hold the contents
-		std::streampos size = file.tellg();
+		std::streampos size{file.tellg()};
         std::cout<< "Creating buffer of size: " << size << std::endl;
 		char* buffer = new char[size]; 
         std::cout<< "Buffer created" << std::endl;

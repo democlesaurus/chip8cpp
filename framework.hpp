@@ -28,4 +28,4 @@ private:
     SDL_Renderer *renderer = NULL;      // Pointer for the renderer
     SDL_Window *window = NULL;      // Pointer for the window
 };
-#endif FRAMEWORK_HPP
+#endif //FRAMEWORK_HPP

@@ -12,6 +12,8 @@
 #define FONT_OFFSET 0x050
 #define ROM_OFFSET 0x200
 
+
+//Note: all of the fields are in reverse order due to big/little endian conversion.
 union Instruction {
 
     uint16_t code;
@@ -87,4 +89,4 @@ class Chip8 {
         std::uint8_t curKey{0},prevKey{0};
         bool keyPressed{false};
 };
-#endif CHIP8_HPP
+#endif //CHIP8_HPP
